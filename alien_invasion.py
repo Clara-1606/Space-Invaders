@@ -32,6 +32,8 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
 
         self._create_fleet()
+        self.point=0
+        
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -49,6 +51,10 @@ class AlienInvasion:
         """Respond to keypresses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                f= open("pointUnePartie.txt", "r")
+                score = f.read() #On stock le contenu du fichier dans message
+                f2= open("scoresTotaux.txt","a+",encoding='utf-8')
+                f2.write(score)
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
@@ -62,6 +68,10 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
+            f= open("pointUnePartie.txt", "r")
+            score = f.read() #On stock le contenu du fichier dans message
+            f2= open("scoresTotaux.txt","a+",encoding='utf-8')
+            f2.write(score)
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -96,11 +106,17 @@ class AlienInvasion:
         # Remove any bullets and aliens that have collided.
         collisions = pygame.sprite.groupcollide(
                 self.bullets, self.aliens, True, True)
-
+        if collisions :
+            self.point=self.point+1
+            f = open("pointUnePartie.txt","w+",encoding='utf-8')
+            f.write(str(self.point) +"\n")
+            f.close()
+        
         if not self.aliens:
             # Destroy existing bullets and create new fleet.
             self.bullets.empty()
             self._create_fleet()
+             
 
     def _update_aliens(self):
         """
@@ -202,3 +218,4 @@ if __name__ == '__main__':
     # Make a game instance, and run the game.
     ai = AlienInvasion()
     ai.run_game()
+
