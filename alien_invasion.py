@@ -102,6 +102,7 @@ class AlienInvasion:
                  self.bullets.remove(bullet)
 
         self._check_bullet_alien_collisions()
+        self._check_bullet_soucoupe_collisions()
 
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collisions."""
@@ -110,6 +111,17 @@ class AlienInvasion:
                 self.bullets, self.aliens, True, True)
         if collisions :
             self.point=self.point+1
+            f = open("pointUnePartie.txt","w+",encoding='utf-8')
+            f.write(str(self.point) +"\n")
+            f.close()
+
+    def _check_bullet_soucoupe_collisions(self):
+        """Respond to bullet-alien collisions."""
+        # Remove any bullets and aliens that have collided.
+        collisions = pygame.sprite.groupcollide(
+                self.bullets, self.soucoupes, True, True)
+        if collisions :
+            self.point=self.point+100
             f = open("pointUnePartie.txt","w+",encoding='utf-8')
             f.write(str(self.point) +"\n")
             f.close()
