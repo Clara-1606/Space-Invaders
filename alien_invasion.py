@@ -8,6 +8,7 @@ from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from soucoupe import Soucoupe
 
 
 class AlienInvasion:
@@ -30,6 +31,7 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+        self.soucoupes=pygame.sprite.Group()
 
         self._create_fleet()
         self.point=0
@@ -116,6 +118,7 @@ class AlienInvasion:
             # Destroy existing bullets and create new fleet.
             self.bullets.empty()
             self._create_fleet()
+            self._create_soucoupe()
              
 
     def _update_aliens(self):
@@ -181,6 +184,12 @@ class AlienInvasion:
             for alien_number in range(number_aliens_x):
                 self._create_alien(alien_number, row_number)
 
+    def _create_soucoupe(self):
+        """Create the fleet of soucoupe."""
+        # Make an alien.
+        soucoupe = Soucoupe(self)
+        self.soucoupes.add(soucoupe) 
+
     def _create_alien(self, alien_number, row_number):
         """Create an alien and place it in the row."""
         alien = Alien(self)
@@ -210,6 +219,7 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        self.soucoupes.draw(self.screen)
 
         pygame.display.flip()
 
